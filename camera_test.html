@@ -1,0 +1,31 @@
+<div id="content">
+    <div id="player"></div>
+    <div id="buttons"></div>
+</div>
+
+<script>
+    var api = claraplayer('player');
+    var sceneId = 'f1130a9c-91ff-4f9a-bfb8-0abb903d453a'
+    api.sceneIO.fetchAndUse(sceneId);
+    ['orbit', 'pan','zoom','home','fullscreen'].map(function(item) {api.player.removeTool(item)});
+    api.on('loaded', function()  {
+        var cameras = api.scene.getAll({type: 'Camera', property: 'name'});
+        for(var id in cameras) {
+            var button = document.createElement('button');
+            button.innerText = cameras[id];
+            button.onclick = onClick(id);
+            document.getElementById('buttons').appendChild(button);
+        }
+        //document.getElementById('baseScene').setAttribute('href','https://clara.io/view/'+sceneId);
+    });
+
+    var x = document.getElementById('content');
+
+    function onLoad
+
+    function onClick(id) {
+        return function(ev) {
+            return api.player.animateCameraTo(id, 1000)
+        }
+    }
+</script>

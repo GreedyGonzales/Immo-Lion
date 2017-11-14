@@ -1,0 +1,32 @@
+<div id="content">
+    <div id="player"></div>
+    <div id="buttons"></div>
+</div>
+
+<script>
+    var api = claraplayer('player');
+    var sceneId = 'f1130a9c-91ff-4f9a-bfb8-0abb903d453a';
+    api.sceneIO.fetchAndUse(sceneId).then(function(){
+        //['orbit', 'pan','zoom','home','fullscreen'].map(function(item) {api.player.hideTool(item)});
+        ['orbit', 'pan','zoom','home','fullscreen'].map(function(item) {api.player.removeTool(item)});
+        //document.getElementById('baseScene').setAttribute('href','https://clara.io/view/'+sceneId);
+        api.commands.addCommand({
+            enabled: true,
+            active: true,
+            tool: {
+                drag: function(ev){
+                    var bb = ev.rect;
+                    return {
+                        momentum: false,
+                        handle: function(ev){
+                            var degrees = 360*ev.deltaX/bb.width;
+                            var rotation = api.scene.get({name:'Lion', plug: 'Transform', property: 'rotation'});
+
+                            api.scene.set({name:'Lion', plug: 'Transform', property: 'rotation'},{x: rotation.x, y:rotation.y+degrees, z:rotation.z});
+                        }
+                    };
+                },
+            }
+        }, 'planeRotate');
+    });
+</script>
